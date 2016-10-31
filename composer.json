@@ -1,0 +1,36 @@
+{
+	"name": "addvideo/addvideo-api-php-client-examples",
+	"version": "1.0.0",
+	"description": "Examples for the use of addvideo/addvideo-api-php-client",
+	"keywords": [
+		"php",
+		"sdk",
+		"api"
+	],
+	"homepage": "https://api.addvideo.de",
+	"license": "GNU AGPL v3",
+	"authors": [
+		{
+			"name": "AddVideo by nacamar GmbH",
+			"homepage": "https://github.com/addvideo/addvideo-api-php-client-examples"
+		}
+	],
+	"require": {
+		"php": ">=5.4",
+		"ext-curl": "*",
+		"ext-json": "*",
+		"ext-mbstring": "*",
+		"addvideo/addvideo-api-php-client": "*@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"de\\addvideo\\client\\examples\\": "src/"
+		}
+	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/addvideo/addvideo-api-php-client.git"
+		}
+	]
+}
