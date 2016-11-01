@@ -26,8 +26,8 @@ try {
         // Configure API key authorization: token
         de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
     }
-} catch (Exception $e) {
-    echo 'Exception when calling AuthApi->authenticate: ', $e->getMessage(), PHP_EOL;
+} catch (\de\addvideo\client\ApiException $e) {
+    echo $e->getResponseObject(), PHP_EOL;
 }
 
 
@@ -77,8 +77,8 @@ try {
          */
         $ingest_job_id = $result->getIngestJobId();
     }
-} catch (Exception $e) {
-    echo 'Exception when calling AddvideoworkflowApi->ingest: ', $e->getMessage(), PHP_EOL;
+} catch (\de\addvideo\client\ApiException $e) {
+    echo $e->getResponseObject(), PHP_EOL;
 }
 
 // =============================================================================
