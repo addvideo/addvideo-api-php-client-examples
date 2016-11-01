@@ -1,6 +1,6 @@
 <?php
 
-require_once('/vendor/autoload.php');
+require_once('../vendor/autoload.php');
 
 // =============================================================================
 // 1st: Create session and authenticate
@@ -14,10 +14,8 @@ $credentials->setSecret(""); // PUT YOUR SECRET HERE!
 
 try {
     $result = $auth_api_instance->authenticate($credentials);
-    print_r($result);
-
     $status = $result->getStatus();
-    if (isset($status) && $status === "success") {
+    if (isset($status) && $status == "success") {
         /* token will be valid for 12 hours from now on. You could save the 
          * valid_to info and re-authenticate when the time is come. This reduces 
          * the number of  API calls!
@@ -27,7 +25,7 @@ try {
         de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo $e->getResponseObject(), PHP_EOL;
+    echo '1st Step: ', $e->getResponseObject(), PHP_EOL;
 }
 
 
@@ -78,7 +76,7 @@ try {
         $ingest_job_id = $result->getIngestJobId();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo $e->getResponseObject(), PHP_EOL;
+    echo '2nd Step: ', $e->getResponseObject(), PHP_EOL;
 }
 
 // =============================================================================
