@@ -54,7 +54,7 @@ $entry->setExternalReferenceId("YOUR_ID");
 /*
  * This download link has to be provided, where the source files can be retrieved from.
  */
-$entry->setDownloadLink("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov");
+$entry->setSourceUrl("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov");
 
 /*
  * You should provide a callback service. This means if the callback url param 
@@ -62,7 +62,7 @@ $entry->setDownloadLink("http://download.blender.org/peach/bigbuckbunny_movies/b
  * status on your ingest. Please note the special param value @STATUS@. This 
  * placeholder will be replaced by the staus update info.
  */
-$entry->setCallbackUrl("http://your-domain.com/your-path?your-query-params=&status=@STATUS@");
+$entry->setWebhook("http://your-domain.com/your-path?your-query-params=&status=@STATUS@");
 
 $entries = array();
 $entries[] = $entry;
