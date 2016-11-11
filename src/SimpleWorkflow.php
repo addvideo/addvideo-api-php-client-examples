@@ -5,12 +5,15 @@ require_once('../vendor/autoload.php'); // HINT: path has to be adapted to your 
 // 1st Step: Create session and authenticate
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AuthApi.md#authenticate
 // =============================================================================
+echo "1st STEP\n";
+echo "========\n";
 
 $auth_api_instance = new de\addvideo\client\api\AuthApi();
 $credentials = new \de\addvideo\client\model\CredentialsDTO();
 $credentials->setAccount(""); // PUT YOUR ACCOUNT ID HERE!
 $credentials->setSecret(""); // PUT YOUR SECRET HERE!
 
+echo "Try to authenticate...";
 try {
     $result = $auth_api_instance->authenticate($credentials);
     // print_r($result);
@@ -20,7 +23,10 @@ try {
          * valid_to info and re-authenticate when the time is come. This reduces 
          * the number of  API calls!
          */
-        // $valid_to = $result->getValidTo();
+        echo "success!\n";
+        echo "Token [", $result->getToken(), "].\n";
+        echo "Authentication valid until [", $result->getValidTo(), "].\n";
+        
         // Configure API key authorization: token
         de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
     } else {
@@ -29,14 +35,17 @@ try {
         // transform the result into an ApiException (see catch clause below).
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo '1st Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 1st Step: ', $e->getResponseObject(), PHP_EOL;
 }
+echo "\n\n";
 
 
 // =============================================================================
 // 2nd Step: Ingest file
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AddvideoworkflowApi.md#ingest
 // =============================================================================
+echo "2nd STEP\n";
+echo "========\n";
 
 $workflow_api_instance = new de\addvideo\client\api\AddvideoworkflowApi();
 
@@ -68,6 +77,8 @@ $entries = array();
 $entries[] = $entry;
 
 $ingest_data->setEntries($entries);
+
+echo "Try to ingest [", $ingest_data, "]...";
 try {
     $result = $workflow_api_instance->ingest($ingest_data);
     // print_r($result);
@@ -76,14 +87,20 @@ try {
      * scheduled job.
      */
     $ingest_job_id = $result->getIngestJobId();
+    echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo '2nd Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', $e->getResponseObject(), PHP_EOL;
 }
+echo "\n\n";
+
 
 // =============================================================================
 // 3rd Step: request status for ingest
 // =============================================================================
+echo "3rd STEP\n";
+echo "========\n";
 
+echo "Requesting status for ingestJobId [", $ingest_job_id, "]...";
 $stored_entry_id =  0;
 try {
     $status_result = $workflow_api_instance->status($ingest_job_id);
@@ -111,14 +128,18 @@ try {
         //$stored_entry_id = $mam_entry_id;
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo '3rd Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 3rd Step: ', $e->getResponseObject(), PHP_EOL;
 }
+echo "\n\n";
 
 
 // =============================================================================
 // 4th Step: request playout urls
 // =============================================================================
+echo "4th STEP\n";
+echo "========\n";
 
+echo "Requesting playout URLs for storedEntryId [", $stored_entry_id, "]...";
 try {
     /*
      * request playout URLs for a READY!!!!! entry (review ingest status first)
@@ -138,6 +159,7 @@ try {
         // $playout_URL->isProtected();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo '4th Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 4th Step: ', $e->getResponseObject(), PHP_EOL;
 }
+echo "\n\n";
 
