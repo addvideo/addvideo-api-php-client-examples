@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/plain');
 
 require_once('../vendor/autoload.php'); // HINT: path has to be adapted to your needs
 // =============================================================================
@@ -35,7 +36,7 @@ try {
         // transform the result into an ApiException (see catch clause below).
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 1st Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 1st Step: ', getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -89,7 +90,7 @@ try {
     $ingest_job_id = $result->getIngestJobId();
     echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 2nd Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -128,7 +129,7 @@ try {
         //$stored_entry_id = $mam_entry_id;
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 3rd Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 3rd Step: ', getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -159,7 +160,15 @@ try {
         // $playout_URL->isProtected();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 4th Step: ', $e->getResponseObject(), PHP_EOL;
+    echo 'EXCEPTION in 4th Step: ', getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
+/**
+ * getExceptionString
+ * @param \de\addvideo\client\ApiException $e to create string for.
+ * @return type string
+ */
+function getExceptionString(\de\addvideo\client\ApiException $e){
+    return "[code: ".$e->getCode().", message: ".$e->getMessage().", responseHeaders: ".$e->getResponseHeaders().", responseObject: ".$e->getResponseObject()."]";
+}
