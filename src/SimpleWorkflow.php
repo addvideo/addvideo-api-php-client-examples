@@ -26,7 +26,7 @@ try {
          */
         echo "success!\n";
         echo "Token [", $result->getToken(), "].\n";
-        echo "Authentication valid until [", $result->getValidTo(), "].\n";
+        echo "Authentication valid until [", $result->getValidTo()->format('Y-m-d H:i:s'), "].\n";
         
         // Configure API key authorization: token
         de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
@@ -170,5 +170,5 @@ echo "\n\n";
  * @return type string
  */
 function getExceptionString(\de\addvideo\client\ApiException $e){
-    return "[code: ".$e->getCode().", message: ".$e->getMessage().", responseHeaders: ".$e->getResponseHeaders().", responseObject: ".$e->getResponseObject()."]";
+    return "[code: ".$e->getCode().", message: ".$e->getMessage().", responseHeaders: ".implode(";",$e->getResponseHeaders()).", responseObject: ".$e->getResponseObject()."]";
 }
