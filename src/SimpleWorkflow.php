@@ -3,6 +3,7 @@
 header('Content-Type: text/plain');
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
+require_once './AuthenticationHelper.inc.php';
 require_once './Tools.inc.php';
 require_once './Credentials.inc.php';
 require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
@@ -10,39 +11,18 @@ require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your n
 // 1st Step: Create session and authenticate
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AuthApi.md#authenticate
 // =============================================================================
-echo "1st STEP\n";
-echo "========\n";
-
-$auth_api_instance = new de\addvideo\client\api\AuthApi();
-$credentials = new \de\addvideo\client\model\CredentialsDTO();
-$credentials->setAccount(ACCOUNT); // As defined in Credentials.inc.php
-$credentials->setSecret(SECRET); // As defined in Credentials.inc.php
-
+echo "1st STEP", PHP_EOL;
+echo "========", PHP_EOL;
 echo "Try to authenticate...";
-try {
-    $result = $auth_api_instance->authenticate($credentials);
-    // print_r($result);
-    $status = $result->getStatus();
-    if (isset($status) && $status == "success") {
-        /* token will be valid for 12 hours from now on. You could save the 
-         * valid_to info and re-authenticate when the time is come. This reduces 
-         * the number of  API calls!
-         */
-        echo "success!\n";
-        echo "Token [", $result->getToken(), "].\n";
-        echo "Authentication valid until [", $result->getValidTo()->format('Y-m-d H:i:s'), "].\n";
-
-        // Configure API key authorization: token
-        de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
-    } else {
-        // should never happen, since if status is 'failed' a http status value 
-        // unequal 200 will be returned. In that case the client sdk will 
-        // transform the result into an ApiException (see catch clause below).
-    }
-} catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 1st Step: ', getExceptionString($e), PHP_EOL;
+/*
+ * simplified authentication process. If you'd like to take a deeper dive, please take look at Example_Authentication.php
+ */
+if (!AuthenticationHelper::authenticate(ACCOUNT, SECRET)) {
+    echo "failed!", PHP_EOL;
+    exit;
 }
-echo "\n\n";
+echo "success!", PHP_EOL;
+echo PHP_EOL, PHP_EOL;
 
 
 // =============================================================================
@@ -94,7 +74,7 @@ try {
     $ingest_job_id = $result->getIngestJobId();
     echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 2nd Step: ', getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -133,7 +113,7 @@ try {
         //$stored_entry_id = $mam_entry_id;
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 3rd Step: ', getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 3rd Step: ', Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -164,6 +144,6 @@ try {
         // $playout_URL->isProtected();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 4th Step: ', getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 4th Step: ', Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
