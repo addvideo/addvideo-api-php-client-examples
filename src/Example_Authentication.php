@@ -38,6 +38,6 @@ try {
         // transform the result into an ApiException (see catch clause below).
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 1st Step: ', getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 1st Step: ', Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
