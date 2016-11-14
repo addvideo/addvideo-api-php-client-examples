@@ -85,38 +85,50 @@ echo "\n\n";
 echo "3rd STEP\n";
 echo "========\n";
 
-echo "Requesting status for ingestJobId [", $ingest_job_id, "]...";
-$stored_entry_id = 0;
-try {
-    $status_result = $workflow_api_instance->status($ingest_job_id);
-    //    print_r($status_result);
-    /*
-     * You can access the status info as needed
-     */
-    $status_entries = $status_result->getEntries();
-    foreach ($status_entries as $status_entry) {
-        $external_reference_id = $status_entry->getExternalReferenceId();
-        $status = $status_entry->getStatus();
+$count = 0;
+while (true) {
+
+    echo "sleeping for 5 sec...";
+    sleep(5);
+
+    echo "Requesting status for ingestJobId [", $ingest_job_id, "]...";
+    $stored_entry_id = 0;
+    try {
+        $status_result = $workflow_api_instance->status($ingest_job_id);
+        print_r($status_result);
         /*
-         * Retrieve entry information for this ingest object. There will be an 
-         * entry for READY ingest jobs, only!
+         * You can access the status info as needed
          */
-        $mam_entry = $status_entry->getEntry();
-        /*
-         * $mam_entry_id is needed to retrieve playout URLs later on!
-         */
-        $mam_entry_id = $mam_entry->getId();
-        /*
-         * Store status update in your external systems or view them in a web 
-         * ui, and so on....
-         */
-        //$stored_entry_id = $mam_entry_id;
+        $status_entries = $status_result->getEntries();
+        foreach ($status_entries as $status_entry) {
+            $external_reference_id = $status_entry->getExternalReferenceId();
+            $status = $status_entry->getStatus();
+            /*
+             * Retrieve entry information for this ingest object. There will be an 
+             * entry for READY ingest jobs, only!
+             */
+            $mam_entry = $status_entry->getEntry();
+            if (isset($mam_entry)) {
+                /*
+                 * $mam_entry_id is needed to retrieve playout URLs later on!
+                 */
+                $mam_entry_id = $mam_entry->getId();
+                /*
+                 * Store status update in your external systems or view them in a web 
+                 * ui, and so on....
+                 */
+                $stored_entry_id = $mam_entry_id; // don't do this in your prduction environment, this is just a very stupid hack to show the functionality!
+            }
+        }
+    } catch (\de\addvideo\client\ApiException $e) {
+        echo 'EXCEPTION in 3rd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
     }
-} catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 3rd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+    $count++;
+    if ($count > 4) {
+        break;
+    }
 }
 echo "\n\n";
-
 
 // =============================================================================
 // 4th Step: request playout urls
@@ -131,6 +143,7 @@ try {
      */
     $playout_URLs = $workflow_api_instance->getPlayoutURLs($stored_entry_id);
 
+    echo "found!", PHP_EOL;
     /*
      * Reference to parent entry
      */
@@ -138,6 +151,7 @@ try {
     $playout_URLs_Set = $playout_URLs->getPlayoutUrlsSet();
     foreach ($playout_URLs_Set as $playout_URL) {
         $url = $playout_URL->getURL();
+        echo 'URL [' . $url . '].', PHP_EOL;
         /*
          * Hint whether URL is protected against unauthorized access or not!
          */
