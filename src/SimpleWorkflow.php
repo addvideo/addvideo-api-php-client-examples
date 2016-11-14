@@ -3,10 +3,10 @@
 header('Content-Type: text/plain');
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-require_once './AuthenticationHelper.inc.php';
-require_once './Tools.inc.php';
-require_once './Credentials.inc.php';
 require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
+require_once './tools/AuthenticationHelper.inc.php';
+require_once './tools/Tools.inc.php';
+require_once './Credentials.inc.php';
 // =============================================================================
 // 1st Step: Create session and authenticate
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AuthApi.md#authenticate
@@ -17,7 +17,7 @@ echo "Try to authenticate...";
 /*
  * simplified authentication process. If you'd like to take a deeper dive, please take look at Example_Authentication.php
  */
-if (!AuthenticationHelper::authenticate(ACCOUNT, SECRET)) {
+if (!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(ACCOUNT, SECRET)) {
     echo "failed!", PHP_EOL;
     exit;
 }
@@ -32,10 +32,10 @@ echo PHP_EOL, PHP_EOL;
 echo "2nd STEP\n";
 echo "========\n";
 
-$workflow_api_instance = new de\addvideo\client\api\AddvideoworkflowApi();
+$workflow_api_instance = new \de\addvideo\client\api\AddvideoworkflowApi();
 
 $ingest_data = new \de\addvideo\client\model\IngestDataDTO(); // \de\addvideo\client\model\IngestDataDTO | IngestDataDTO object containing all ingest data
-$entry = new de\addvideo\client\model\IngestDataEntryDTO();
+$entry = new \de\addvideo\client\model\IngestDataEntryDTO();
 
 /*
  * Set your external reference id. This id will be used to lookup allready 
@@ -74,7 +74,7 @@ try {
     $ingest_job_id = $result->getIngestJobId();
     echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 2nd Step: ', Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -113,7 +113,7 @@ try {
         //$stored_entry_id = $mam_entry_id;
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 3rd Step: ', Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 3rd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
 
@@ -144,6 +144,6 @@ try {
         // $playout_URL->isProtected();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 4th Step: ', Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 4th Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
