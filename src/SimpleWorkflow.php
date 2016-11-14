@@ -1,7 +1,11 @@
 <?php
-header('Content-Type: text/plain');
 
-require_once('../vendor/autoload.php'); // HINT: path has to be adapted to your needs
+header('Content-Type: text/plain');
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+require_once './Tools.inc.php';
+require_once './Credentials.inc.php';
+require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
 // =============================================================================
 // 1st Step: Create session and authenticate
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AuthApi.md#authenticate
@@ -11,8 +15,8 @@ echo "========\n";
 
 $auth_api_instance = new de\addvideo\client\api\AuthApi();
 $credentials = new \de\addvideo\client\model\CredentialsDTO();
-$credentials->setAccount(""); // PUT YOUR ACCOUNT ID HERE!
-$credentials->setSecret(""); // PUT YOUR SECRET HERE!
+$credentials->setAccount(ACCOUNT); // As defined in Credentials.inc.php
+$credentials->setSecret(SECRET); // As defined in Credentials.inc.php
 
 echo "Try to authenticate...";
 try {
@@ -27,7 +31,7 @@ try {
         echo "success!\n";
         echo "Token [", $result->getToken(), "].\n";
         echo "Authentication valid until [", $result->getValidTo()->format('Y-m-d H:i:s'), "].\n";
-        
+
         // Configure API key authorization: token
         de\addvideo\client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', $result->getToken());
     } else {
@@ -102,11 +106,11 @@ echo "3rd STEP\n";
 echo "========\n";
 
 echo "Requesting status for ingestJobId [", $ingest_job_id, "]...";
-$stored_entry_id =  0;
+$stored_entry_id = 0;
 try {
     $status_result = $workflow_api_instance->status($ingest_job_id);
     //    print_r($status_result);
-    /* 
+    /*
      * You can access the status info as needed
      */
     $status_entries = $status_result->getEntries();
@@ -118,7 +122,7 @@ try {
          * entry for READY ingest jobs, only!
          */
         $mam_entry = $status_entry->getEntry();
-        /* 
+        /*
          * $mam_entry_id is needed to retrieve playout URLs later on!
          */
         $mam_entry_id = $mam_entry->getId();
@@ -146,13 +150,13 @@ try {
      * request playout URLs for a READY!!!!! entry (review ingest status first)
      */
     $playout_URLs = $workflow_api_instance->getPlayoutURLs($stored_entry_id);
-    
+
     /*
      * Reference to parent entry
      */
     // $playout_URLs->getEntry();
     $playout_URLs_Set = $playout_URLs->getPlayoutUrlsSet();
-    foreach ($playout_URLs_Set as $playout_URL){
+    foreach ($playout_URLs_Set as $playout_URL) {
         $url = $playout_URL->getURL();
         /*
          * Hint whether URL is protected against unauthorized access or not!
@@ -163,12 +167,3 @@ try {
     echo 'EXCEPTION in 4th Step: ', getExceptionString($e), PHP_EOL;
 }
 echo "\n\n";
-
-/**
- * getExceptionString
- * @param \de\addvideo\client\ApiException $e to create string for.
- * @return type string
- */
-function getExceptionString(\de\addvideo\client\ApiException $e){
-    return "[code: ".$e->getCode().", message: ".$e->getMessage().", responseHeaders: ".implode(";",$e->getResponseHeaders()).", responseObject: ".$e->getResponseObject()."]";
-}
