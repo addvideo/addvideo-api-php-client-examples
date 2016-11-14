@@ -15,7 +15,6 @@ if (!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(ACCOUNT, SEC
 echo 'Authenticated successfully!', PHP_EOL;
 
 $entry_id = ""; // PUT a valid entry_id for a READY!!! entry here!
-
 // =============================================================================
 // Request playout urls
 // =============================================================================
@@ -35,11 +34,11 @@ try {
         $playout_URLs_Set = $playout_URLs->getPlayoutUrlsSet();
         foreach ($playout_URLs_Set as $playout_URL) {
             $url = $playout_URL->getURL();
-            echo 'URL [' . $url . '].', PHP_EOL;
+            echo 'URL [URL: ' . $url . ', label: ' . $playout_URL->getLabel() . ', bitrate: ' . $playout_URL->getBitrate() . ', isProtected: ' . $playout_URL->getProtected() . '].', PHP_EOL;
             /*
              * Hint whether URL is protected against unauthorized access or not!
              */
-            // $playout_URL->isProtected();
+            // $playout_URL->getProtected();
         }
     }
 } catch (\de\addvideo\client\ApiException $e) {
