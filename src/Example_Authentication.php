@@ -1,6 +1,6 @@
 <?php
-header('Content-Type: text/plain');
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+\header('Content-Type: text/plain');
+\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE);
 
 require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
 require_once './tools/Tools.inc.php';
@@ -13,8 +13,8 @@ require_once './Credentials.inc.php';
 
 $auth_api_instance = new \de\addvideo\client\api\AuthApi();
 $credentials = new \de\addvideo\client\model\CredentialsDTO();
-$credentials->setAccount(ACCOUNT); // As defined in Credentials.inc.php
-$credentials->setSecret(SECRET); // As defined in Credentials.inc.php
+$credentials->setAccount(\ACCOUNT); // As defined in Credentials.inc.php
+$credentials->setSecret(\SECRET); // As defined in Credentials.inc.php
 
 echo "Try to authenticate...";
 try {
@@ -38,6 +38,6 @@ try {
         // transform the result into an ApiException (see catch clause below).
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 1st Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 1st Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), \PHP_EOL;
 }
 echo "\n\n";
