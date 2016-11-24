@@ -1,17 +1,17 @@
 <?php
-header('Content-Type: text/plain');
-// error_reporting(E_ERROR | E_WARNING | E_PARSE);
+\header('Content-Type: text/plain');
+// \error_reporting(\E_ERROR | \E_WARNING | \E_PARSE);
 
 require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
 require_once './tools/AuthenticationHelper.inc.php';
 require_once './tools/Tools.inc.php';
 require_once './Credentials.inc.php';
 
-if(!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(ACCOUNT, SECRET)){
-    echo 'Unable to authenticate!', PHP_EOL;
+if(!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(\ACCOUNT, \SECRET)){
+    echo 'Unable to authenticate!', \PHP_EOL;
     exit();
 }
-echo 'Authenticated successfully!', PHP_EOL;
+echo 'Authenticated successfully!', \PHP_EOL;
 
 // =============================================================================
 // Ingest file
@@ -58,7 +58,7 @@ try {
     $ingest_job_id = $result->getIngestJobId();
     echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 2nd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), \PHP_EOL;
 }
 echo "\n\n";
 
