@@ -1,7 +1,7 @@
 <?php
 
-header('Content-Type: text/plain');
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+\header('Content-Type: text/plain');
+\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE);
 
 require_once '../vendor/autoload.php'; // HINT: path has to be adapted to your needs
 require_once './tools/AuthenticationHelper.inc.php';
@@ -11,18 +11,18 @@ require_once './Credentials.inc.php';
 // 1st Step: Create session and authenticate
 // see https://github.com/addvideo/addvideo-api-php-client/blob/master/docs/Api/AuthApi.md#authenticate
 // =============================================================================
-echo "1st STEP", PHP_EOL;
-echo "========", PHP_EOL;
+echo "1st STEP", \PHP_EOL;
+echo "========", \PHP_EOL;
 echo "Try to authenticate...";
 /*
  * simplified authentication process. If you'd like to take a deeper dive, please take look at Example_Authentication.php
  */
-if (!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(ACCOUNT, SECRET)) {
-    echo "failed!", PHP_EOL;
+if (!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(\ACCOUNT, \SECRET)) {
+    echo "failed!", \PHP_EOL;
     exit;
 }
-echo "success!", PHP_EOL;
-echo PHP_EOL, PHP_EOL;
+echo "success!", \PHP_EOL;
+echo \PHP_EOL, \PHP_EOL;
 
 
 // =============================================================================
@@ -74,7 +74,7 @@ try {
     $ingest_job_id = $result->getIngestJobId();
     echo "success! [ingestJobId: ", $ingest_job_id, "].\n";
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 2nd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 2nd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), \PHP_EOL;
 }
 echo "\n\n";
 
@@ -121,7 +121,7 @@ while (true) {
             }
         }
     } catch (\de\addvideo\client\ApiException $e) {
-        echo 'EXCEPTION in 3rd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+        echo 'EXCEPTION in 3rd Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), \PHP_EOL;
     }
     $count++;
     if ($count > 4) {
@@ -143,7 +143,7 @@ try {
      */
     $playout_URLs = $workflow_api_instance->getPlayoutURLs($stored_entry_id);
 
-    echo "found!", PHP_EOL;
+    echo "found!", \PHP_EOL;
     /*
      * Reference to parent entry
      */
@@ -151,13 +151,13 @@ try {
     $playout_URLs_Set = $playout_URLs->getPlayoutUrlsSet();
     foreach ($playout_URLs_Set as $playout_URL) {
         $url = $playout_URL->getURL();
-        echo 'URL [' . $url . '].', PHP_EOL;
+        echo 'URL [' . $url . '].', \PHP_EOL;
         /*
          * Hint whether URL is protected against unauthorized access or not!
          */
         // $playout_URL->isProtected();
     }
 } catch (\de\addvideo\client\ApiException $e) {
-    echo 'EXCEPTION in 4th Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), PHP_EOL;
+    echo 'EXCEPTION in 4th Step: ', \de\addvideo\examples\tools\Tools::getExceptionString($e), \PHP_EOL;
 }
 echo "\n\n";
