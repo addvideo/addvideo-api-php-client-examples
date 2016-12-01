@@ -51,12 +51,14 @@ $entry->setExternalReferenceId("YOUR_ID");
 $entry->setSourceUrl("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov");
 
 /*
- * You should provide a callback service. This means if the callback url param 
+ * You should provide a callback service. This means if the webhook param 
  * is set, we will try to reach your callback service to tell you the current 
  * status on your ingest. Please note the special param value @STATUS@. This 
- * placeholder will be replaced by the staus update info.
+ * placeholder will be replaced by the staus update info. @ENTRY_ID@ will be 
+ * replaced by an id that was created by us. This id can be used to retrieve 
+ * playout URLs etc.
  */
-$entry->setWebhook("http://your-domain.com/your-path?your-query-params=&status=@STATUS@");
+$entry->setWebhook("http://your-domain/path/webhook.php?your-status-query-param=@STATUS@&your-entry-id-query-param=@ENTRY_ID@");
 
 $entries = array();
 $entries[] = $entry;
