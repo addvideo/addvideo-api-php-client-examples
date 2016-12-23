@@ -34,7 +34,7 @@ try {
         $playout_URLs_Set = $playout_URLs->getPlayoutUrlsSet();
         foreach ($playout_URLs_Set as $playout_URL) {
             $url = $playout_URL->getURL();
-            echo 'URL [URL: ' . $url . ', label: ' . $playout_URL->getLabel() . ', bitrate: ' . $playout_URL->getBitrate() . ', isProtected: ' . $playout_URL->getProtected() . '].', \PHP_EOL;
+            echo 'URL [URL: ' . $url . ', label: ' . $playout_URL->getLabel() . ', bitrate: ' . $playout_URL->getBitrate(). ', target-video-bitrate: ' . $playout_URL->getTargetVideoBitrate(). ', target-audio-bitrate: ' . $playout_URL->getTargetAudioBitrate() . ', isProtected: ' . $playout_URL->getProtected() . '].', \PHP_EOL;
             /*
              * Hint whether URL is protected against unauthorized access or not!
              */
