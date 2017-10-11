@@ -14,7 +14,7 @@ if (!\de\addvideo\examples\tools\AuthenticationHelper::authenticate(\ACCOUNT, \S
 }
 echo 'Authenticated successfully!', \PHP_EOL;
 
-$entry_id = "0_kg544oro"; // PUT a valid entry_id of an entry here!
+$entry_id = ""; // PUT a valid entry_id of an entry here!
 // =============================================================================
 // Request entry
 // =============================================================================
